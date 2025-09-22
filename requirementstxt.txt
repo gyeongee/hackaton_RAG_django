@@ -1,0 +1,7 @@
+torch
+torchvision
+onnxruntime
+numpy
+av
+opencv-python
+openai

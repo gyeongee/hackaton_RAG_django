@@ -1,0 +1,21 @@
+# Python cache
+__pycache__/
+*.py[cod]
+video_app/key/openai_api_key.txt
+video_app/csv_data/embeddings_df.csv
+video_app/csv_data/안전드림_실종경보.csv
+video_app/csv_data/안전지도_정보.csv
+video_app/migrations
+video_app/apps.py
+video_app/models.py
+video_app/tests.py
+media
+anomalous_behavior_video_cls_model/config.json
+anomalous_behavior_video_cls_model/model.safetensors
+anomalous_behavior_video_cls_model/preprocessor_config.json
+anomalous_behavior_video_cls_model/training_args.bin
+anomalous_behavior_video_cls_model/video_cls_model.onnx
+db.sqlite3
+안전정보.csv_embeddings.pkl
+anomalous_detection/asgi.py
+anomalous_detection/wsgi.py

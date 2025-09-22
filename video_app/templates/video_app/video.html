@@ -1,0 +1,76 @@
+<!-- 새로고침 없이 질문-답변이 나오도록 JavaScript Fetch API를 추가 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Video 영상 분석 / Q&A</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f7f7f7; }
+        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; }
+        .result { margin-top: 20px; font-size: 1.2em; font-weight: bold; color: #d9534f; }
+        video { display: block; margin: 20px auto; border: 1px solid #ccc; border-radius: 10px; }
+        input[type="file"], input[type="text"], button, input[type="submit"] { display: block; margin: 10px auto; padding: 10px; font-size: 1em; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>영상 분석</h1>
+
+        <!-- 업로드 폼 -->
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="video_file" accept="video/*" required>
+            <input type="submit" value="분석 시작">
+        </form>
+
+        <!-- 비디오 재생 -->
+        {% if video_file_url %}
+            <video width="640" height="360" controls>
+                <source src="{{ video_file_url }}" type="video/mp4">
+                브라우저가 video 태그를 지원하지 않습니다.
+            </video>
+        {% endif %}
+
+        <!-- 분석 결과 -->
+        {% if result %}
+            <div class="result">
+                분석 결과: {{ result }}
+            </div>
+        {% endif %}
+
+        <h1>실종 데이터 기반 LLM Q&A</h1>
+
+        <input type="text" id="question" placeholder="질문을 입력하세요" size="50">
+        <button id="ask-btn">질문하기</button>
+
+        <h2>답변:</h2>
+        <div id="answer"></div>
+
+        <hr style="margin:30px 0;">
+    </div>
+
+    <script>
+        $('#ask-btn').click(function() {
+            let question = $('#question').val();
+            if (!question) return alert("질문을 입력하세요.");
+
+            $('#answer').text("처리중...");
+
+            $.ajax({
+                url: "{% url 'video_app:ask_question' %}",  // AJAX URL 수정
+                data: { q: question },
+                success: function(data) {
+                    $('#answer').text(data.answer);
+                },
+                error: function(err) {
+                    $('#answer').text("오류 발생");
+                    console.error(err);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
